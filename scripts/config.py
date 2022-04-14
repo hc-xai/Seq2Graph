@@ -10,16 +10,16 @@ config.decoder=EasyDict()
 
 ##### Train params #####
 config.train_params.n_epochs = 5
-config.train_params.lr=0.01/3
-config.train_params.batch_size=128
+config.train_params.lr=0.01
+config.train_params.batch_size=64
 config.train_params.verbose=0
-config.train_params.print_every=50000
+config.train_params.print_every=100
 config.train_params.permute=True
 
 ##### Neural Net Arh ##### 
 
 #Global
-config.num_of_time_series=2
+config.num_of_time_series=3
 config.len_of_time_series=5
 
 # Encoder

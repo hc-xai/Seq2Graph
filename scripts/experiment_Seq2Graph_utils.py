@@ -21,8 +21,8 @@ import pandas as pd
 # 0 = GeForce GTX 980
 DEVICE = torch.device('cuda:1' if torch.cuda.is_available() else 'cpu')
 
-from TEST_config import config
-from TEST_seq2graph_simple import Seq2Graph,Seq2Graph_test
+from config import config
+from seq2graph_simple import Seq2Graph,Seq2Graph_test
 
 def causeme_get_table_data_from_zip(zipfile_list):
     prepared_path=[]
