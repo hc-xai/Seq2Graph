@@ -15,6 +15,7 @@ import pickle
 from tqdm import tqdm_notebook as tqdm
 
 import pandas as pd
+import os
 
 # test for GPU
 # setting device on GPU if available, else CPU
@@ -82,13 +83,22 @@ def run_Seq2Graph_single_experiment(load_string,config,i,loss,folder_name,save_a
     
     loss_train=loss(model.forward(X_train),y_train)
     if save_att_coefs:
+        
+        if not os.path.isdir(f'../{folder_name}'):
+            os.mkdir(f"../{folder_name}")
+            os.mkdir(f"../{folder_name}/train")
+            os.mkdir(f"../{folder_name}/test")
+        if not os.path.isdir(f'../{folder_name}/train'):
+            os.mkdir(f"../{folder_name}/train")
+        if not os.path.isdir(f'../{folder_name}/test'):
+            os.mkdir(f"../{folder_name}/test")
         save_string="".join(load_string.split('/')[-1].split('.')[:-1]) + str(dt.datetime.today()).replace(":","_").replace(" ",'_').replace("-","_") + '_'+ str(i) +'_alpha_beta.p'
-        pickle.dump((model.alpha,model.beta),open(f'./{folder_name}/train/' +save_string,'wb'))
+        pickle.dump((model.alpha,model.beta),open(f'../{folder_name}/train/' +save_string,'wb'))
 
     loss_test=loss(model.forward(X_test),y_test)
     if save_att_coefs:
         save_string="".join(load_string.split('/')[-1].split('.')[:-1]) + str(dt.datetime.today()).replace(":","_").replace(" ",'_').replace("-","_") + '_'+ str(i) +'_alpha_beta.p'
-        pickle.dump((model.alpha,model.beta),open(f'./{folder_name}/test/' +save_string,'wb'))
+        pickle.dump((model.alpha,model.beta),open(f'../{folder_name}/test/' +save_string,'wb'))
 
     return loss_train.cpu().detach().numpy(),loss_test.cpu().detach().numpy()
 
@@ -158,7 +168,17 @@ def causeme_run_Seq2Graph_single_experiment(load_string,config,loss,save_att_coe
     model.train(X_train,y_train,nn.MSELoss,torch.optim.Adam,False)
     
     loss_train=loss(model.forward(X_train),y_train)
+        
     if save_att_coefs:
+        if not os.path.isdir('./seq2graph_alpha_beta'):
+            os.mkdir("./seq2graph_alpha_beta")
+            os.mkdir("./seq2graph_alpha_beta/train")
+            os.mkdir("./seq2graph_alpha_beta/test")
+        if not os.path.isdir('./seq2graph_alpha_beta/train'):
+            os.mkdir("./seq2graph_alpha_beta/train")
+        if not os.path.isdir('./seq2graph_alpha_beta/test'):
+            os.mkdir("./seq2graph_alpha_beta/test")
+            
         save_string="".join(load_string.split('/')[-1].split('.')[:-1]) + str(dt.datetime.today()).replace(":","_").replace(" ",'_').replace("-","_") + '_'+ str(i) +'_alpha_beta.p'
         pickle.dump((model.alpha,model.beta),open('./seq2graph_alpha_beta/train/' +save_string,'wb'))
     
